@@ -1,16 +1,19 @@
+#include <argp.h>
 #include <arpa/inet.h> // inet_ntoa
+#include <asm-generic/socket.h>
 #include <ifaddrs.h> // getifaddrs()
 #include <linux/if.h> // IFNAMSIZ
-#include <netinet/ip.h> // ip header
-#include <netinet/udp.h> // udp header
+#include <netinet/in.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h> // malloc
 #include <string.h> // memset
 #include <sys/socket.h>
 #include <unistd.h>
-#include <signal.h>
-#include <argp.h>
-#include <stdbool.h>
+
+#define BUFFER_SIZE 65536
 
 const char *argp_program_version =
         "myfilter 0.1";
@@ -31,15 +34,6 @@ static struct argp_option options[] =
             { 0 }
     };
 
-
-//void process_packet(unsigned char* , int);
-//void print_ip_header(unsigned char* , int);
-//void print_udp_packet(unsigned char * , int);
-//void print_data(unsigned char* , int);
-void intHandler(int);
-
-FILE *logfile;
-
 typedef struct {
     uint64_t packets;
     uint64_t bytes;
@@ -47,10 +41,11 @@ typedef struct {
 
 statistics_t statistics = {0};
 
-#define BUFFER_SIZE 65536
+void intHandler(int);
+int check_interface_name(const char *interface_name);
 
 void intHandler(int dummy) {
-    printf("Total = %lu\n", statistics.packets);
+    printf("\rTotal: packets = %lu, bytes = %lu\n", statistics.packets, statistics.bytes);
     exit(EXIT_SUCCESS);
 }
 
