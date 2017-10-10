@@ -4,11 +4,12 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_COLOR_MAKEFILE   ON)
 
 project(myfilter C)			# Название проекта
-ADD_DEFINITIONS(-Os -Wall -Werror -Wmissing-declarations)
+ADD_DEFINITIONS(-O2 -ggdb -Wall -Wmissing-declarations)
 
 set(SOURCE_ELF myfilter.c)		# Установка переменной со списком исходников для исполняемого файла
 add_executable(myfilter ${SOURCE_ELF})	# Создает исполняемый файл с именем main
 set_property(TARGET myfilter PROPERTY C_STANDARD 11)
 
 find_library(ubus_library NAMES ubus)
-target_link_libraries(myfilter ${ubus_library})		# Линковка программы с библиотекой
+find_library(ubox_library NAMES ubox)
+target_link_libraries(myfilter pthread ${ubus_library} ${ubox_library})		# Линковка программы с библиотекой
