@@ -78,7 +78,7 @@ void sigint_handler(int signo) {
     exit(EXIT_SUCCESS);
 }
 
-/* Print error meassage and exit */
+/* Print error message and exit */
 static void perror_exit(const char *msg)
 {
 	perror(msg);
