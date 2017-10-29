@@ -9,6 +9,7 @@ AM_INIT_AUTOMAKE
 
 # Checks for programs.
 AC_PROG_CC
+AC_PROG_CC_STDC
 AC_PROG_CPP
 
 # Use the C language and compiler for the following checks

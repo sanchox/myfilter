@@ -31,12 +31,12 @@ static char doc[] =
 /* The options we understand. */
 static struct argp_option options[] =
     {
-            { "interface", 'i', "INTERFACE", 0, "Network interface name" },
-            { "source-addr", 'a', "ADDRESS", 0, "Source IP address" },
-            { "source-port", 'p', "PORT", 0, "Source UDP port" },
-            { "update-interval", 'u', "UPDATE_INTERVAL", 0, "Statistics update time" },
-            { "ubus-socket", 's', "UBUS_SOCKET", 0, "ubus UNIX socket" },
-            { 0 }
+            {"interface", 'i', "INTERFACE", 0, "Network interface name", 0},
+            {"source-addr", 'a', "ADDRESS", 0, "Source IP address", 0},
+            {"source-port", 'p', "PORT", 0, "Source UDP port", 0},
+            {"update-interval", 'u', "UPDATE_INTERVAL", 0, "Statistics update time", 1},
+            {"ubus-socket", 's', "UBUS_SOCKET", 0, "ubus UNIX socket", 1},
+            {0}
     };
 
 /* Program configuration */
@@ -66,7 +66,7 @@ int check_interface_name(const char *);
 void *ubus_event_thread_fn(void *);
 
 /* SIGINT handler */
-void sigint_handler(int signo) {
+void sigint_handler(int signo __attribute__ ((unused))) {
 
 	/* Print statistics */
     printf("\rTotal: packets = %lu, bytes = %lu\n", statistics.packets, statistics.bytes);
@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
     };
 
     /* Parsing command line arguments */
-    struct argp argp = { options, parse_opt, NULL, doc };
+    struct argp argp = {options, parse_opt, NULL, doc, 0, 0, 0};
     if (argp_parse(&argp, argc, argv, 0, 0, &arguments))
     	perror_exit("argp_parse()");
 
