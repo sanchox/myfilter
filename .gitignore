@@ -67,6 +67,7 @@ myfilter
 /autom4te.cache/
 /config.*
 /configure
+/compile
 /depcomp
 /install-sh
 /libtool
